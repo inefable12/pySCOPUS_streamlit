@@ -8,6 +8,7 @@ from io import BytesIO
 st.set_page_config(page_title="Buscador SCOPUS", layout="wide")
 
 st.title("🔍 Búsqueda de artículos científicos en SCOPUS usando PyScopus")
+st.info("Autor: Dr. Jesus Alvarado-Huayhuaz")
 
 # --- Entrada de usuario ---
 api_key = st.text_input("🔑 Ingresa tu clave de API SCOPUS", type="password")
