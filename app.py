@@ -87,8 +87,5 @@ if st.button("Buscar en SCOPUS") and api_key and keywords:
                     ax3.set_ylabel('Número total de citaciones')
                     ax3.tick_params(axis='x', rotation=90)
                     st.pyplot(fig3)
-    
-        else:
-            st.warning("Debes ingresar al menos una palabra clave.")
             except Exception as e:
                 st.error(f"Ocurrió un error al consultar la API: {e}")
