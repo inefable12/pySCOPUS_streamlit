@@ -40,14 +40,6 @@ if st.button("Buscar en SCOPUS") and api_key and keywords:
             st.code(full_query, language='sql')  # muestra la query generada
             try:
                 df = scopus.search(full_query, count=200, view='STANDARD')
-                # Continúa el flujo...
-            except Exception as e:
-                st.error(f"Ocurrió un error al consultar la API: {e}")
-        else:
-            st.warning("Debes ingresar al menos una palabra clave.")
-###
-            try:
-                df = scopus.search(full_query, count=200, view='STANDARD')
                 if df.empty:
                     st.warning("No se encontraron resultados.")
                 else:
@@ -95,6 +87,8 @@ if st.button("Buscar en SCOPUS") and api_key and keywords:
                     ax3.set_ylabel('Número total de citaciones')
                     ax3.tick_params(axis='x', rotation=90)
                     st.pyplot(fig3)
-
+    
+        else:
+            st.warning("Debes ingresar al menos una palabra clave.")
             except Exception as e:
                 st.error(f"Ocurrió un error al consultar la API: {e}")
