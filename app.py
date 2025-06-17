@@ -11,7 +11,13 @@ st.title("🔍 Búsqueda de artículos científicos en SCOPUS usando PyScopus")
 
 # --- Entrada de usuario ---
 api_key = st.text_input("🔑 Ingresa tu clave de API SCOPUS", type="password")
-keywords = st.text_input("🔍 Ingresa hasta 3 palabras clave separadas por comas")
+st.markdown("### 🔍 Búsqueda personalizada con operadores lógicos")
+
+term1 = st.text_input("Palabra clave 1", "iron")
+logic1 = st.selectbox("Operador entre 1 y 2", ["AND", "OR"])
+term2 = st.text_input("Palabra clave 2", "siderophore")
+logic2 = st.selectbox("Operador entre 2 y 3", ["AND", "OR"])
+term3 = st.text_input("Palabra clave 3", "simulations")
 
 # Botón de búsqueda
 if st.button("Buscar en SCOPUS") and api_key and keywords:
@@ -21,13 +27,25 @@ if st.button("Buscar en SCOPUS") and api_key and keywords:
         scopus = Scopus(api_key)
 
         # Formatear cadena de búsqueda
-        terms = [kw.strip() for kw in keywords.split(",") if kw.strip()]
-        if not 1 <= len(terms) <= 3:
-            st.error("Por favor ingresa entre 1 y 3 palabras clave.")
+        query_parts = []
+        if term1:
+            query_parts.append(f'"{term1}"')
+        if term2:
+            query_parts.append(f"{logic1} \"{term2}\"")
+        if term3:
+            query_parts.append(f"{logic2} \"{term3}\"")
+        
+        if query_parts:
+            full_query = f"TITLE-ABS-KEY({' '.join(query_parts)})"
+            st.code(full_query, language='sql')  # muestra la query generada
+            try:
+                df = scopus.search(full_query, count=200, view='STANDARD')
+                # Continúa el flujo...
+            except Exception as e:
+                st.error(f"Ocurrió un error al consultar la API: {e}")
         else:
-            query = " AND ".join([f'"{t}"' for t in terms])
-            full_query = f"TITLE-ABS-KEY({query})"
-
+            st.warning("Debes ingresar al menos una palabra clave.")
+###
             try:
                 df = scopus.search(full_query, count=200, view='STANDARD')
                 if df.empty:
