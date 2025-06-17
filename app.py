@@ -20,9 +20,13 @@ logic2 = st.selectbox("Operador entre 2 y 3", ["AND", "OR"])
 term3 = st.text_input("Palabra clave 3", "simulations")
 
 # Botón de búsqueda
-if st.button("Buscar en SCOPUS") and api_key and keywords:
-    with st.spinner("Buscando artículos en SCOPUS..."):
-
+if st.button("Buscar en SCOPUS"):
+    if not api_key:
+        st.error("Por favor ingresa tu clave de API SCOPUS.")
+    elif not term1.strip():
+        st.error("Debes ingresar al menos una palabra clave.")
+    else:
+        with st.spinner("Buscando artículos en SCOPUS..."):
         # Inicializar conexión Scopus
         scopus = Scopus(api_key)
 
