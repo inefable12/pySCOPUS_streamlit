@@ -1,4 +1,4 @@
 streamlit
 pandas
 matplotlib
-pyscopus
+pyscopus==1.0.3a2
